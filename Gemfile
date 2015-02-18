@@ -3,4 +3,7 @@ ruby "1.9.3"
 
 gem 'sinatra'
 gem 'thin'
-gem 'pry'
+
+group :test, :development do
+  gem 'pry'
+end

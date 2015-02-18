@@ -3,9 +3,9 @@ require 'sinatra'
 
 set :sessions, true
 
-#use Rack::Session::Cookie, :key => 'rack.session',
-#                           :path => '/',
-#                           :secret => 'dhsndumw7263ns6y2mskd92wsh' 
+use Rack::Session::Cookie, :key => 'rack.session',
+                           :path => '/',
+                           :secret => 'dhsndumw7263ns6y2mskd92wsh' 
 
 BLACKJACK_AMOUNT = 21
 DEALER_MIN_HIT_AMOUNT = 17
