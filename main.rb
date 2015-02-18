@@ -56,13 +56,15 @@ helpers do
   def winner!(msg)
     @show_hit_stay_buttons = false
     @show_play_again_button = true
-    @success = "<strong>#{session[:player_name]} wins!</strong> #{msg}"
+    @success = "<strong>#{session[:player_name]} wins $#{session[:player_bet]}!</strong> #{msg}"
+    session[:player_money] = session[:player_money] + session[:player_bet].to_i
   end
 
   def loser!(msg)
     @show_hit_stay_buttons = false
     @show_play_again_button = true
-    @error = "<strong>#{session[:player_name]} loses!</strong> #{msg}"
+    @error = "<strong>#{session[:player_name]} loses $#{session[:player_bet]}!</strong> #{msg}"
+    session[:player_money] = session[:player_money] - session[:player_bet].to_i
   end
 
   def tie!(msg)
@@ -96,8 +98,9 @@ post '/new_player' do
     halt erb(:get_player_name)
   end
 
+  session[:player_money] = 500
   session[:player_name] = params[:player_name]
-  redirect '/game'
+  redirect '/bet'
 end
 
 get '/game' do
@@ -122,7 +125,7 @@ get '/game' do
   if dealer_total == BLACKJACK_AMOUNT
     session[:turn] = "dealer"
     loser!("Dealer hit blackjack.")  
-  elsif dealer_total == BLACKJACK_AMOUNT
+  elsif player_total == BLACKJACK_AMOUNT
     session[:turn] = "dealer"
     winner!("You hit blackjack!") 
   end
@@ -192,5 +195,27 @@ get '/game/compare' do
   erb :game
 end
 
+get '/bet' do
+  @show_bet_input = true
+  if session[:player_money] <= 0
+    @error = "You all out of cash. Click new game above to play again."
+    @show_bet_input = false
+  end
+  erb :get_player_bet
+end
 
-
+post '/bet' do
+  if params[:player_bet].empty?
+    @error = "Please make a bet."
+    halt erb(:get_player_bet)
+  elsif params[:player_bet].to_i == 0
+    @error = "You cannot bet zero."
+    halt erb(:get_player_bet)
+  elsif params[:player_bet].to_i > session[:player_money]
+    @error = "You don't have enough money for that bet."
+    halt erb(:get_player_bet)   
+  else
+    session[:player_bet] = params[:player_bet].to_i
+    redirect '/game'
+  end
+end

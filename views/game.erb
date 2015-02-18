@@ -37,10 +37,11 @@
 
 <% if @show_hit_stay_buttons %>  
   <p>
-  <%= session[:player_name] %> has <%= calculate_total(session[:player_cards]) %>. 
+    <span id="player_total"><%= session[:player_name] %>, you have <%= calculate_total(session[:player_cards]) %>.</span>
+    <span id="player_money">You have <strong>$<%= session[:player_money] %></strong> and bet <strong>$<%= session[:player_bet] %></strong> this round.</span>
   </p>
   <p>
-  What would you like to do?
+  <span id="player_prompt">What would you like to do?</span>
     <form id="hit_form" action="/game/player/hit" method='post'>
       <input type="submit" class="btn btn-success" value="Hit">
     </form>
@@ -53,7 +54,7 @@
 
 <% if @show_play_again_button %>
   <p>
-    <a href="/game" class="btn btn-primary">Play Again</a>
+    <a href="/bet" class="btn btn-primary">Play Again</a>
   </p>
 <% end %>
 

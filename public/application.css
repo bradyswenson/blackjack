@@ -17,5 +17,19 @@ img.card_image {
 
 div.well h5 {
   margin-top: 0px;
+}
 
+#player_total {
+  font-size: 110%;
+  font-weight: bold;
+}
+
+#player_money {
+  font-size: 90%;
+  color: #555;
+}
+
+#player_prompt {
+  font-size: 110%;
+  font-weight: bold;
 }
