@@ -207,11 +207,14 @@ end
 post '/bet' do
   if params[:player_bet].empty?
     @error = "Please make a bet."
+    @show_bet_input = true
     halt erb(:get_player_bet)
   elsif params[:player_bet].to_i == 0
+    @show_bet_input = true
     @error = "You cannot bet zero."
     halt erb(:get_player_bet)
   elsif params[:player_bet].to_i > session[:player_money]
+    @show_bet_input = true
     @error = "You don't have enough money for that bet."
     halt erb(:get_player_bet)   
   else
